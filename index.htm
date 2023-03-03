@@ -1,0 +1,56 @@
+<html>
+
+<head>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js" ></script>
+
+<script>
+
+async function load() {
+     const url = 'https://abbiemcdowell.github.io/XOR3/model.json';
+     const model = await tf.loadLayersModel(url);
+     return model;
+};
+
+function predict(model) {
+    const numberOne = document.getElementById('numberOne').value;
+    const numberTwo = document.getElementById('numberTwo').value;
+    const inputTensor = tf.tensor([[parseInt(numberOne), parseInt(numberTwo)]]);
+    
+    model.then(model => {
+        let result = model.predict(inputTensor);
+        result = result.round().dataSync()[0];
+        alert(result ? "1" : "0");
+        
+    });
+};
+
+const model = load();
+
+</script>
+</head>
+
+<body>
+<h3>  XOR Problem  </h3>
+
+<h4>X value</h4>
+<input id = "numberOne" type="text" list="numbersX" />
+<datalist id="numbersX">
+    <option value="1">Positive x</option>
+    <option value="-1">Negative x</option>
+</datalist>
+<br>
+
+<h4>Y value</h4>
+<input id = "numberTwo" type="text" list="numbersY" />
+<datalist id="numbersY">
+    <option value="1">Positive y</option>
+    <option value="-1">Negative y</option>
+</datalist>
+
+<br><br>
+<button onclick="predict()">Predict</button>
+
+</body>
+
+</html>
